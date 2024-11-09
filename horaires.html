@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier Professionnel</title>
+    <style>
+        body { font-family: Arial, sans-serif; 
+        padding: 20px; 
+        background-color: #f9f9f9; 
+        text-align: center; 
+        font-size: 0.8em; 
+        /* Réduit la taille du texte */
+        margin: 10px; 
+        /* Réduit les marges autour du contenu */
+        padding: 5px; 
+        /* Réduit l'espace intérieur */
+}
+        }
+        
+        
+        .schedule { margin: 20px 0; padding: 15px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+        .month-title { font-size: 1.5em; font-weight: bold; margin: 20px 0; }
+        .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 20px; }
+        .day, .day-of-week { padding: 10px; border-radius: 4px; }
+        .day-of-week { background-color: #ddd; font-weight: bold; }
+        .day { background-color: #eee; }
+        .day.today { background-color: #90ee90; } /* Couleur pour aujourd'hui */
+        .day.absent { background-color: #ff6666; color: #fff; } /* Couleur pour jours d'absence */
+        .day.past { background-color: #cccccc; color: #666; } /* Couleur pour les jours passés */
+        .empty-day { background-color: transparent; }
+        .toggle-button { margin-top: 20px; padding: 10px 20px; font-size: 1em; cursor: pointer; border: none; border-radius: 5px; background-color: #007bff; color: #fff; }
+        .info-text { margin-top: 20px; font-size: 1.1em; color: #ff6666; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2>Calendrier Professionnel</h2>
+    <div class="schedule">
+        <p>Horaires habituels : <strong>8h00 - 22h00</strong></p>
+        <p>Ouvert : <strong>7 jours sur 7</strong></p>
+    </div>
+
+    <h2 class="month-title" id="month-title">Mois en cours</h2>
+    <div class="calendar" id="calendar">
+        <!-- Les jours de la semaine et les jours du mois seront générés ici -->
+    </div>
+
+    <button class="toggle-button" id="toggle-month-btn">Afficher le mois suivant</button>
+
+    <div class="info-text">
+        Les jours en rouge correspondent aux jours où le commerçant est absent.
+    </div>
+
+    <script>
+        const calendar = document.getElementById('calendar');
+        const monthTitle = document.getElementById('month-title');
+        const toggleMonthBtn = document.getElementById('toggle-month-btn');
+
+        // Obtenir le mois et l'année actuels
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+
+        const daysOfWeek = ["L", "M", "M", "J", "V", "S", "D"];
+        const months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+
+        // Exemple de jours d'absence pour le mois actuel et le suivant
+        const absentDaysCurrentMonth = [5, 12, 18, 25]; // Novembre
+        const absentDaysNextMonth = [3, 10, 17, 24]; // Décembre
+        const absentDaysNextNextMonth = [4, 11, 18, 25]; // Janvier
+
+        function renderCalendar(forNextMonth = false) {
+            // Vider le calendrier
+            calendar.innerHTML = '';
+
+            // Définir le mois et l'année à afficher
+            let month = forNextMonth ? currentMonth + 1 : currentMonth;
+            let year = currentYear;
+            if (month > 11) {
+                month = 0; // Passer à janvier de l'année suivante
+                year += 1;
+            }
+
+            // Mettre à jour le titre du mois
+            monthTitle.textContent = `${months[month]} ${year}`;
+
+            // Afficher les jours de la semaine
+            daysOfWeek.forEach(day => {
+                const dayOfWeekElement = document.createElement('div');
+                dayOfWeekElement.classList.add('day-of-week');
+                dayOfWeekElement.textContent = day;
+                calendar.appendChild(dayOfWeekElement);
+            });
+
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const firstDay = new Date(year, month, 1).getDay();
+            const offset = (firstDay + 6) % 7;
+
+            for (let i = 0; i < offset; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.classList.add('day', 'empty-day');
+                calendar.appendChild(emptyDay);
+            }
+
+            const today = new Date();
+            const isCurrentMonth = month === today.getMonth() && year === today.getFullYear();
+
+            // Afficher les jours du mois
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+
+                // Marquer les jours d'absence en fonction du mois
+                if (forNextMonth && absentDaysNextMonth.includes(day)) {
+                    dayElement.classList.add('absent');
+                } else if (!forNextMonth && absentDaysCurrentMonth.includes(day)) {
+                    dayElement.classList.add('absent');
+                }
+
+                // Colorer en gris les jours passés du mois actuel
+                if (isCurrentMonth && day < today.getDate()) {
+                    dayElement.classList.add('past');
+                }
+
+                // Marquer le jour actuel
+                if (isCurrentMonth && day === today.getDate()) {
+                    dayElement.classList.add('today');
+                }
+
+                calendar.appendChild(dayElement);
+            }
+        }
+
+        // Afficher le mois actuel par défaut
+        renderCalendar();
+
+        // Gérer le clic du bouton pour basculer entre le mois actuel et le mois suivant
+        let showingNextMonth = false;
+        toggleMonthBtn.addEventListener('click', () => {
+            showingNextMonth = !showingNextMonth;
+            if (showingNextMonth) {
+                // Déplacer les jours d'absence du mois suivant dans le mois actuel
+                absentDaysCurrentMonth.splice(0, absentDaysCurrentMonth.length, ...absentDaysNextMonth);
+
+                // Mettre à jour le mois actuel et le mois suivant
+                absentDaysNextMonth.splice(0, absentDaysNextMonth.length, ...absentDaysNextNextMonth);
+
+                renderCalendar(showingNextMonth);
+                toggleMonthBtn.textContent = "Afficher le mois suivant";
+            } else {
+                renderCalendar(showingNextMonth);
+                toggleMonthBtn.textContent = "Afficher le mois actuel";
+            }
+        });
+    </script>
+</body>
+</html>

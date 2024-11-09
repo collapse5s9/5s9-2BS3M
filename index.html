@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2BS Media Multiservices Medina</title>
+    <link rel="icon" href="favicon.png">
+    <script src="https://kit.fontawesome.com/1519f19b40.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        :root {
+            --gold: #87CEEB; /* Skyblue */
+            --black: #f9f9f9; /* Very lightgray */
+            --white: #1a1a1a; /* Very dark gray */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .header {
+            background-color: var(--white);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px solid var(--gold);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }                
+
+        .logo {
+            color: var(--gold);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .logo-image {
+            max-height: 30px;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+         }
+
+        .cart-icon {
+            color: var(--gold);
+            font-size: 1.3rem;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--white);
+            color: var(--black);
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .hero {
+             height: calc(100vh - 60px); /* Soustrait la hauteur du header de la hauteur totale */
+             background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7))0, url('hero.jpg') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 1rem;
+            margin-top: -20px; /* Correspond à la hauteur du header */
+}
+
+        .hero-content h1 {
+            color: var(--gold);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            color: var(--white);
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background-color: var(--gold);
+            color: var(--black);
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .products {
+            padding: 4rem 1rem;
+        }
+
+        .section-title {
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        .product-card {
+            background-color: var(--black);
+            border: 1px solid var(--gold);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            color: var(--white);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: var(--white);
+        }
+        
+                /* Filter styles */
+        .filter-container {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .filter-btn {
+            background-color: var(--gold);
+            color: var(--black);
+            padding: 0.6rem 2rem;
+            margin: 0.3rem;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .filter-btn:hover {
+            background-color: var(--white);
+            color: var(--black);
+        }
+
+        footer {
+            background-color: var(--gold);
+            border-top: 3px solid var(--white);
+            padding: 0.5rem 1rem;
+            text-align: center;
+        }
+
+        .social-links {
+            margin-bottom: 0.5rem;
+        }
+
+        .social-links a {
+            color: var(--white);
+            margin: 0 1rem;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--black);
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ... [Vos styles précédents restent inchangés] ... */
+
+        /* Nouveaux styles pour la navigation */
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--black);
+        }
+
+        /* Styles pour les pages */
+        .page {
+            display: none;
+            padding-top: 80px;
+            min-height: calc(100vh - 200px);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Styles pour la page About */
+        .about-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .contact-form {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--gold);
+            background: var(--black);
+            color: var(--white);
+            border-radius: 5px;
+        }
+        
+        /* Styles pour la page services*/
+        
+        .services-section {
+    padding: 4rem 1rem;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.service-card {
+    background-color: var(--black);
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+}
+
+.service-title {
+    color: var(--gold);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.service-description {
+    color: var(--white);
+}
+
+        /* Styles pour le panier */
+        .cart-page {
+            min-height: 90vh;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .cart-total {
+            text-align: right;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--gold);
+        }
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: var(--black);
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    color: var(--white);
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: var(--white);
+    cursor: pointer;
+}
+
+/* Si vous voulez adapter la taille à différentes résolutions */
+@media (max-width: 768px) {
+    .nav-icon {
+        font-size: 6vw; /* Augmente la taille des icônes sur les petits écrans */
+    }
+}
+
+@media (min-width: 1024px) {
+    .nav-icon {
+        font-size: 3vw; /* Réduit la taille des icônes sur les grands écrans */
+    }
+}
+
+
+iframe {
+    width: 100%;
+    height: 550px; /* Ajuste cette valeur en fonction de l'espace nécessaire */
+    border: none; /* Facultatif, pour ne pas avoir de bordure autour de l'iframe */
+}
+
+.scrollable-gallery {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.scrollable-gallery img {
+    height: 200px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.popup {
+    display: none; /* Caché par défaut */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Pour le mettre devant le contenu */
+}
+
+.popup img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="#" onclick="showPage('home')" class="logo"><img src="logo.png" class="logo-image">2BS 3M</a>
+            <div class="nav-menu">
+                <a href="#" onclick="showPage('services')"><i class="fas fa-headset service-icon nav-icon"></i></a>
+                <a href="#" onclick="showPage('about')"><i class="fas fa-id-card nav-icon"></i></a>
+                <a href="#" onclick="showPage('cart')" class="cart-icon nav-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page d'accueil -->
+    <div id="home" class="page active">
+        <!-- Votre contenu existant de la page d'accueil -->
+      <section class="hero">
+        <div class="hero-content" data-aos="fade-up">
+          <h1> 2BS <br/><br/> Media <br/> Multiservices <br/> Medina </h1>
+          <p style="color: white;"> Slogants - Phrase d'accroche </p>
+          <a href="#" onclick="showPage('services')" class="btn">Consulter nos services </a><br/><br/><br/>
+          <a href="#products" class="btn">Explorer nos produits</a>
+        </div>
+      </section>
+    
+
+    <section id="products" class="products">
+        <h2 class="section-title" data-aos="fade-up"><br/><br/>Nos Produits</h2>
+        
+                    <!-- Filter Buttons -->
+            <div class="filter-container">
+                <button class="filter-btn" onclick="filterProducts('all')">Tous</button>
+                <button class="filter-btn" onclick="filterProducts('category1')">Cosmetiques</button>
+                <button class="filter-btn" onclick="filterProducts('category2')">Habillement</button>
+                <button class="filter-btn" onclick="filterProducts('category3')">Autres</button>
+            </div>
+            
+        <div class="product-grid">
+            <div class="product-card" data-category="category1" data-aos="fade-up">
+                <img src="parfums.jpg" alt="Parfums" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Parfums</h3>
+                    <p class="product-price">2000 francs</p>
+                    <button class="add-to-cart">Ajouter au panier</button>
+                </div>
+            </div>
+            
+            
+            <div class="product-card" data-category="category2" data-aos="fade-up">
+                <img src="t-shirt.jpg" alt="T-shirt" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">T-shirt</h3>
+                    <p class="product-price">1500 francs</p>
+                    <button class="add-to-cart">Ajouter au panier</button>
+                </div>
+            </div>
+            
+            
+            <div class="product-card" data-category="category3" data-aos="fade-up">
+                <img src="sac.jpg" alt="Sac" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Sac</h3>
+                    <p class="product-price">8000 francs</p>
+                    <button class="add-to-cart">Ajouter au panier</button>
+                </div>
+            </div>
+            
+            
+            <div class="product-card" data-category="category1" data-aos="fade-up">
+                <img src="lotion.jpg" alt="Body lotion" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Body Lotion(Deew)</h3>
+                    <p class="product-price">2000 francs</p>
+                    <button class="add-to-cart">Ajouter au panier</button>
+                </div>
+            </div>
+            
+            
+                <div class="product-card" data-category="category2" data-aos="fade-up">
+                    <img src="shoes.jpg" alt="Chaussures" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Chaussures</h3>
+                        <p class="product-price">9500 francs</p>
+                        <button class="add-to-cart">Ajouter au panier</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    
+    <!-- Page À propos -->
+    <div id="about" class="page">
+        <div class="about-section">
+            <h2 class="section-title">À propos de 2BS 3M</h2>
+            <div data-aos="fade-up">
+                <p>2BS 3M est...</p><br>
+                <p>Description</p><br/>
+                <p>Description</p><br/><br/><br/><br/><hr/><br/><br/><br/><br/>
+            </div>
+            <h2 class="section-title">Contactez-nous</h2>
+<form id="contactForm" onsubmit="submitForm(event)" class="contact-form" data-aos="fade-up">
+    <input type="text" name="name" placeholder="Votre nom" required>
+    <input type="email" name="email" placeholder="Votre email" required>
+    <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
+    <button type="submit" class="btn">Envoyer</button>
+</form>
+
+         <!-- Intégration des horaires via un iframe -->
+        <h2 class="section-title">Horaires</h2>
+        <iframe src="horaires.html" width="100%" height="500px" style="border:none;"></iframe>
+        
+         <!-- Galerie d'images -->
+        <div class="scrollable-gallery">
+            <img src="map-dakar.jpg" alt="Description 1" onclick="openPopup(this)">
+            <img src="map-medina.jpg" alt="Description 2" onclick="openPopup(this)">
+            <img src="map-rue25×6.jpg" alt="Description 3" onclick="openPopup(this)">
+        </div>
+
+        <!-- Pop-up d'image -->
+        <div id="imagePopup" class="popup" onclick="closePopup()">
+            <img id="popupImage" src="" alt="">
+        </div>
+        
+        
+<!-- Modal pour afficher le message de succès -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Merci pour votre message !</h2>
+        <p>Votre message a été envoyé avec succès. Nous vous répondrons dès que possible.</p>
+    </div>
+</div>
+        </div>
+    </div>
+    <!-- Page Panier -->
+    <div id="cart" class="page">
+        <div class="cart-page">
+            <h2 class="section-title">Votre Panier</h2>
+            <div id="cart-items">
+                <!-- Les articles du panier seront ajoutés ici dynamiquement -->
+            </div>
+            <div class="cart-total">
+                <h3>Total: <span id="cart-total-amount">0</span> FCFA</h3>
+                <button class="btn" onclick="checkout()">Réserver</button>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div id="services" class="page">
+    <section class="services-section">
+        <h2 class="section-title">Nos Services</h2>
+        <h3 style="text-align: center;"><strong>Transfert d'argent</strong></h3><br/><br/>
+        <div class="services-grid">
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="om.png" alt="Image Orange Money" style="max-width: 25%;">
+                </div>
+                <h3 class="service-title">Orange Money</h3>
+                <p class="service-description">« Orange Money est un service de transfert et de réception d'argent qui permet d'effectuer des transactions sécurisées depuis un mobile. Idéal pour les paiements de factures, les recharges téléphoniques et les transferts entre particuliers, Orange Money simplifie les transactions financières pour tous. »</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="wave.png" alt="Image Wave Money" style="max-width: 25%;">
+                </div>
+                <h3 class="service-title">Wave</h3>
+                <p class="service-description">« Wave offre un service de transfert d'argent innovant et sans frais pour envoyer et recevoir de l'argent en toute simplicité. L'application est très populaire en Afrique de l'Ouest pour son interface conviviale et sa tarification avantageuse. »</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="fm.png" alt="Image Free Money" style="max-width: 25%;">
+                </div>
+                <h3 class="service-title">Free Money</h3>
+                <p class="service-description">« <a href="https://www.orange.sn/orange-money">Orange Money</a> est un service de transfert et de réception d'argent qui permet d'effectuer des transactions sécurisées depuis un mobile. Idéal pour les paiements de factures, les recharges téléphoniques et les transferts entre particuliers, Orange Money simplifie les transactions financières pour tous. »</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="djamo.png" alt="Image Djamo" style="max-width: 25%;">
+                </div>
+                <h3 class="service-title">Djamo</h3>
+                <p class="service-description">« <a href="https://www.free.sn/services/freemoney">FreeMoney</a> permet d’envoyer de l’argent rapidement à ses proches ou de payer des biens et services sans difficulté. Le service est conçu pour être accessible et sûr, garantissant une expérience client fiable. »</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="ria.png" alt="Image Ria" style="max-width: 25%;">
+                </div>
+                <h3 class="service-title">Ria</h3>
+                 <p class="service-description">« <a href="https://www.riamoneytransfer.com">RIA</a> est un service de transfert d’argent rapide et sécurisé, permettant d’envoyer et de recevoir des fonds à l’international, tout en offrant des taux compétitifs et un service fiable. »</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="cp.png" alt="Image Sesa Pay" style="max-width: 25%;">
+                </div>
+                <h3 class="service-title">Sesa Pay</h3>
+                <p class="service-description">« <a href="https://www.sesapay.sn/">Sesa Pay</a> est une solution de paiement innovante, facilitant les transactions et le transfert d’argent de manière simple et efficace, adaptée aux besoins des utilisateurs modernes. »</p>
+            </div>
+        </div>
+    </section>
+    <section class="services-section">
+        <h3 style="text-align: center;"><strong>Autres</strong></h3><br/><br/>
+        <div class="services-grid">
+          <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="phone.png" alt="Image Phone" style="max-width: 25%;">
+                </div>
+                <h3 class="service-title">Vente de Crédits</h3>
+                <p class="service-description">Rechargez facilement vos crédits pour les opérateurs <a href="https://www.orange.sn">Orange</a>, <a href="https://www.expressotelecom.sn">Expresso</a>, <a href="https://www.free.sn">Free</a> et Pro Mobile. Nous offrons des options de recharge pour tous vos besoins en appels, SMS et data, vous permettant de rester connecté en toute simplicité.</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="vc.png" alt="Image Carte SIM" style="max-width: 25%;">
+                </div>
+                <h3 class="service-title">Vente Carte SIM</h3>
+                <p class="service-description">« Nous proposons la vente de cartes SIM avec différentes option dont Expresso, Orange, Free et même Pro Mobile afin de répondre aux besoins de tous en matière de communication mobile. »</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="pi.png" alt="Image Imprimante" style="max-width: 25%;">
+                </div>
+                <h3 class="service-title">Photocopie - Impression</h3>
+                <p class="service-description">« Nous proposons des services de photocopie et d'impression pour tous vos besoins professionnels et personnels. Que ce soit pour des documents, des rapports, ou des affiches, notre équipement moderne garantit une qualité optimale. »</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="vp.png" alt="Image Vente" style="max-width: 25%;">
+                </div>
+                <h3 class="service-title">Vente de produits divers</h3>
+                <p class="service-description">« Découvrez une gamme de produits disponibles à la vente, incluant des articles de bureau, des fournitures informatiques, des produits de cosmétiques et bien plus encore. Nous sélectionnons des produits de qualité pour répondre aux besoins de nos clients. »</p><br/><br/>
+                <a href="#products" onclick="showPage('home')" class="btn" style="display: block;">Explorer nos produits</a>
+            </div>
+        </div>
+    </section>
+    </div>
+    
+    
+    <footer>
+        <div class="social-links">
+    <a href="https://wa.me/221789229104" title="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://www.instagram.com/5s9horizons/" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com/share/ZNxWd7sKMxwCLfiM/" title="Facebook" target="_blank"><i class="fab fa-facebook"></i></a>
+</div>
+        <p>&copy; copyright 2024,   2BS 3M.<img src="logo.png" class="logo-image"></p>
+        <p>Tous droits réservés.</p>
+        <p>Conçu par <a href="https://collapse5s9.github.io/5s9portfolio" target="_blank" style="text-decoration: none;">5s9 Horizons<img src="logo5s9.png" class="logo-image"></a></p>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true
+        });
+
+        // Gestion de la navigation entre les pages
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+
+        // Gestion du panier
+let cartItems = [];
+const cartCount = document.querySelector('.cart-count');
+const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+function updateCart() {
+    cartCount.textContent = cartItems.length;
+    const cartItemsContainer = document.getElementById('cart-items');
+    cartItemsContainer.innerHTML = '';
+
+    let total = 0;
+    cartItems.forEach((item, index) => {
+        total += item.price;
+        const cartItemElement = document.createElement('div');
+        cartItemElement.className = 'cart-item';
+        cartItemElement.innerHTML = `
+            <div>${item.name}</div>
+            <div>${item.price} FCFA</div>
+            <button onclick="removeFromCart(${index})" class="btn">Supprimer</button>
+        `;
+        cartItemsContainer.appendChild(cartItemElement);
+    });
+
+    document.getElementById('cart-total-amount').textContent = total;
+}
+
+function addToCart(name, price) {
+    cartItems.push({ name, price });
+    updateCart();
+}
+
+function removeFromCart(index) {
+    cartItems.splice(index, 1);
+    updateCart();
+}
+
+function checkout() {
+    if (cartItems.length > 0) {
+        // Créer le message pour WhatsApp
+        let message = "Bonjour 2BS 3M Manager,\n\nJ'aimerais passer la commande suivante:\n\n";
+
+        // Ajouter chaque article
+        cartItems.forEach(item => {
+            message += `- ${item.name}: ${item.price} FCFA\n`;
+        });
+
+        // Calculer et ajouter le total
+        const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+        message += `\nTotal: ${total} FCFA`;
+
+        // Encoder le message pour l'URL
+        const encodedMessage = encodeURIComponent(message);
+
+        // Rediriger vers WhatsApp avec le message préformaté
+        window.open(`https://wa.me/789229104?text=${encodedMessage}`, '_blank');
+
+        // Vider le panier après la redirection
+        cartItems = [];
+        updateCart();
+    } else {
+        alert('Votre panier est vide.');
+    }
+}
+
+addToCartButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const card = button.closest('.product-card');
+        const name = card.querySelector('.product-title').textContent;
+        const price = parseInt(card.querySelector('.product-price').textContent);
+        addToCart(name, price);
+
+        button.textContent = 'Ajouté !';
+        setTimeout(() => {
+            button.textContent = 'Ajouter au panier';
+        }, 1000);
+    });
+});
+
+
+function submitForm(event) {
+    event.preventDefault(); // Empêche la redirection
+
+    const form = document.getElementById("contactForm");
+    const formData = new FormData(form);
+
+    // Envoie des données à Formspree
+    fetch("https://formspree.io/f/xvgokwyb", {
+        method: "POST",
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(response => {
+        if (response.ok) {
+            form.reset(); // Réinitialise le formulaire
+            openModal(); // Ouvre le modal de succès
+        } else {
+            alert("Une erreur est survenue. Veuillez réessayer.");
+        }
+    }).catch(error => {
+        alert("Une erreur réseau est survenue. Veuillez vérifier votre connexion.");
+    });
+}
+
+function openModal() {
+    document.getElementById("successModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("successModal").style.display = "none";
+}
+
+// Ferme le modal si on clique en dehors du contenu
+window.onclick = function(event) {
+    if (event.target === document.getElementById("successModal")) {
+        closeModal();
+    }
+}
+
+function filterProducts(category) {
+            const products = document.querySelectorAll('.product-card');
+            products.forEach(product => {
+                if (category === 'all' || product.getAttribute('data-category') === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+        
+        function openPopup(image) {
+    const popup = document.getElementById("imagePopup");
+    const popupImage = document.getElementById("popupImage");
+    popupImage.src = image.src;
+    popup.style.display = "flex";
+}
+
+function closePopup() {
+    const popup = document.getElementById("imagePopup");
+    popup.style.display = "none";
+}
+    </script>
+</body>
+</html>
